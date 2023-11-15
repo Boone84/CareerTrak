@@ -3,6 +3,8 @@ const router = require("express").Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const bcrypt = require('bcryptjs');
+
 //Returns all users
 router.get("/", async (req, res) => {
   try {
@@ -28,14 +30,20 @@ router.get("/:id", async (req, res) => {
 
 //Creates a new User
 router.post("/", async (req, res) => {
-    try {
-        const result = await prisma.user.create({
-            data: req.body,
-        });
-        res.json(result);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
+  try {
+      const saltRounds = 10; 
+      const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+      const result = await prisma.user.create({
+          data: {
+              ...req.body,
+              password: hashedPassword, 
+          },
+      });
+      res.json(result);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
 });
 
 
