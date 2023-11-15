@@ -1,0 +1,53 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  firstName    String
+  lastName     String?
+  email        String        @unique
+  password     String
+  applications Application[]
+}
+
+model Application {
+  id              Int               @id @default(autoincrement())
+  userId          Int
+  company         String
+  companyURL      String
+  postingURL      String
+  contactName     String
+  contactEmail    String
+  contactNumber   Int
+  position        String
+  compensation    Int
+  status          ApplicationStatus
+  location        JobType
+  locationAddress String?
+  dateApplied     DateTime
+  resumePath      String? // Path or URL to the resume PDF
+  coverLetterPath String? // Path or URL to the cover letter PDF
+  user            User              @relation(fields: [userId], references: [id])
+  notes           String?
+}
+
+enum ApplicationStatus {
+  APPLIED
+  INTERVIEWING
+  OFFER
+  REJECTED
+  WITHDRAWN
+}
+
+enum JobType {
+  Remote
+  Onsite
+  Hybrid
+}

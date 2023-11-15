@@ -12,6 +12,6 @@ app.listen(PORT, (err) => {
     if (!err) {
         console.log(`Server is listening and running on ${PORT}`)
     } else {
-        console.log(`Server Error on ${PORT}`)
+        console.log(`Server Error on port ${PORT}`)
     }
 });
