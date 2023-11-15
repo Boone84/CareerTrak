@@ -1,17 +1,9 @@
-const express = require(`express`);
-const app = express();
-const PORT = 3005;
+const router = require("express").Router();
 
-app.get("/", (req, res) => {
-    res.send(`hello world`);
-
-})
-
-
-app.listen(PORT, (err) => { 
-    if (!err) {
-        console.log(`Server is listening and running on ${PORT}`)
-    } else {
-        console.log(`Server Error on port ${PORT}`)
-    }
+router.get("/", (req, res) => {
+    res.send("You have reached the API.")
 });
+
+router.use("/user", require("./user"));
+
+module.exports = router;
