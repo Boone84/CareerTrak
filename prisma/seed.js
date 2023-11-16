@@ -12,6 +12,7 @@ const main = async () => {
         data: {
             firstName: 'Tony',
             lastName: "Blumberg",
+            userName: "TBlum04",
             email: "tony@tonymail.com",
             password: hashedPassword1,
         },
@@ -23,6 +24,7 @@ const main = async () => {
         data: {
             firstName: 'Boone',
             lastName: "Waldvogel",
+            userName: "BWald04",
             email: "boone@boonemail.com",
             password: hashedPassword2,
         },

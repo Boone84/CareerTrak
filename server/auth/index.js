@@ -1,17 +1,17 @@
-const router = require("express").Router();
+const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-router.get("/", (req, res) => {
-    res.send("Auth router");
+router.get('/', (req, res) => {
+    res.send('Auth router');
 });
 
 // Register a user
-router.post("/register", async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { password, ...userData } = req.body;
-        const saltRounds = 10; // Or use an environment variable for this
+        const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const result = await prisma.user.create({
@@ -21,13 +21,20 @@ router.post("/register", async (req, res) => {
             },
         });
 
-        // Exclude the password from the response
         const { password: _, ...userWithoutPassword } = result;
         res.status(201).json(userWithoutPassword);
     } catch (error) {
-        // You can refine this to handle specific types of errors more gracefully
+        
         res.status(500).json({ error: error.message });
     }
 });
+
+// user sign in
+router.post('/signIn', async (req, res) => {
+    const {userName, password} = req.body;
+    
+})
+
+
 
 module.exports = router;
