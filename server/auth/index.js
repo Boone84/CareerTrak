@@ -2,6 +2,9 @@ const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
+const jwt = require("jsonwebtoken");
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 router.get('/', (req, res) => {
     res.send('Auth router');
@@ -22,7 +25,11 @@ router.post('/register', async (req, res) => {
         });
 
         const { password: _, ...userWithoutPassword } = result;
-        res.status(201).json(userWithoutPassword);
+
+        // Create a JWT token
+        const token = jwt.sign({ userId: userWithoutPassword.id }, JWT_SECRET, { expiresIn: '24h' });
+
+        res.status(201).json({ ...userWithoutPassword, token });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -37,14 +44,13 @@ router.post('/signIn', async (req, res) => {
             where: { userName: userName },
         });
 
-        if (user) {
-            const passwordMatch = await bcrypt.compare(password, user.password);
-            if (passwordMatch) {
-                const { password: _, ...userWithoutPassword } = user;
-                res.send(userWithoutPassword); // Send user data without password
-            } else {
-                res.status(401).send({ message: 'Invalid Login' });
-            }
+        if (user && await bcrypt.compare(password, user.password)) {
+            const { password: _, ...userWithoutPassword } = user;
+
+            // Create a JWT token
+            const token = jwt.sign({ userId: userWithoutPassword.id }, JWT_SECRET, { expiresIn: '24h' });
+
+            res.json({ ...userWithoutPassword, token });
         } else {
             res.status(401).send({ message: 'Invalid Login' });
         }
