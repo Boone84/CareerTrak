@@ -1,4 +1,6 @@
-const router = require('express').Router();
+require('dotenv').config();  // Corrected dotenv import
+const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
@@ -26,7 +28,7 @@ router.post('/register', async (req, res) => {
 
         const { password: _, ...userWithoutPassword } = result;
 
-        // Create a JWT token
+        // Create a JWT token using JWT_SECRET
         const token = jwt.sign({ userId: userWithoutPassword.id }, JWT_SECRET, { expiresIn: '24h' });
 
         res.status(201).json({ ...userWithoutPassword, token });
@@ -35,7 +37,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// user sign in
+// User sign in
 router.post('/signIn', async (req, res) => {
     try {
         const { userName, password } = req.body;
@@ -47,7 +49,7 @@ router.post('/signIn', async (req, res) => {
         if (user && await bcrypt.compare(password, user.password)) {
             const { password: _, ...userWithoutPassword } = user;
 
-            // Create a JWT token
+            // Create a JWT token using JWT_SECRET
             const token = jwt.sign({ userId: userWithoutPassword.id }, JWT_SECRET, { expiresIn: '24h' });
 
             res.json({ ...userWithoutPassword, token });
