@@ -24,23 +24,33 @@ router.post('/register', async (req, res) => {
         const { password: _, ...userWithoutPassword } = result;
         res.status(201).json(userWithoutPassword);
     } catch (error) {
-        
         res.status(500).json({ error: error.message });
     }
 });
 
 // user sign in
 router.post('/signIn', async (req, res) => {
-    const {userName, password} = req.body;
+    try {
+        const { userName, password } = req.body;
 
-    const user = prisma.user.findUnique({
-        where: {userName: userName},
+        const user = await prisma.user.findUnique({
+            where: { userName: userName },
+        });
 
-    });
-    
-
+        if (user) {
+            const passwordMatch = await bcrypt.compare(password, user.password);
+            if (passwordMatch) {
+                const { password: _, ...userWithoutPassword } = user;
+                res.send(userWithoutPassword); // Send user data without password
+            } else {
+                res.status(401).send({ message: 'Invalid Login' });
+            }
+        } else {
+            res.status(401).send({ message: 'Invalid Login' });
+        }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
-
-
 
 module.exports = router;
