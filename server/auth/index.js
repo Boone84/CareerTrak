@@ -1,10 +1,10 @@
-require('dotenv').config();  // Corrected dotenv import
+require('dotenv').config(); // Corrected dotenv import
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 const JWT = process.env.JWT || 'your-secret-key';
 
@@ -28,7 +28,9 @@ router.post('/register', async (req, res) => {
 
         const { password: _, ...userWithoutPassword } = result;
 
-        const token = jwt.sign({ userId: userWithoutPassword.id }, JWT, { expiresIn: '24h' });
+        const token = jwt.sign({ userId: userWithoutPassword.id }, JWT, {
+            expiresIn: '24h',
+        });
         console.log(token);
 
         res.status(201).json({ ...userWithoutPassword, token });
@@ -46,10 +48,12 @@ router.post('/signIn', async (req, res) => {
             where: { userName: userName },
         });
 
-        if (user && await bcrypt.compare(password, user.password)) {
+        if (user && (await bcrypt.compare(password, user.password))) {
             const { password: _, ...userWithoutPassword } = user;
 
-            const token = jwt.sign({ userId: userWithoutPassword.id }, JWT, { expiresIn: '24h' });
+            const token = jwt.sign({ userId: userWithoutPassword.id }, JWT, {
+                expiresIn: '24h',
+            });
 
             res.json({ ...userWithoutPassword, token });
         } else {
@@ -61,22 +65,22 @@ router.post('/signIn', async (req, res) => {
 });
 
 // Route that sends the user based on the given token
-router.get("/me", async (req, res) => {
-    const auth = req.headers.authorization;
-    const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+router.get('/me', async (req, res) => {
+    // const auth = req.headers.authorization;
+    // const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
 
-    if (!token) {
-        return res.status(401).send("No token provided");
-    }
+    // if (!token) {
+    //     return res.status(401).send("No token provided");
+    // }
 
     try {
-        const decoded = jwt.verify(token, JWT); 
+        // const decoded = jwt.verify(token, JWT);
         const user = await prisma.user.findUnique({
-            where: { id: decoded.userId },
+            where: { id: req.userId },
         });
 
         if (!user) {
-            return res.status(404).send("User not found");
+            return res.status(404).send('User not found');
         }
 
         const { password, ...userWithoutPassword } = user;
@@ -85,6 +89,5 @@ router.get("/me", async (req, res) => {
         res.status(401).send(error.message);
     }
 });
-
 
 module.exports = router;
