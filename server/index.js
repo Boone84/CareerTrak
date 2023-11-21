@@ -3,7 +3,10 @@ const express = require('express');
 const app = express();
 const PORT = 3005;
 const jwt = require("jsonwebtoken");
-const path = require("path");
+const path = require("path");const cors = require('cors');
+
+
+app.use(cors());
 
 app.use(require('body-parser').json());
 

@@ -1,0 +1,12 @@
+#landing-parent {
+    text-align: center;
+    margin-top: 40vh;
+}
+
+.links {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    max-width: 30%;
+    margin: 0 auto;
+}

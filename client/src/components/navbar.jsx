@@ -1,13 +1,9 @@
-
-
+import "./navbar.css";
 
 const NavBar = () => {
-
-
-
     return (
         <nav>
-            <section>
+            <section id="navUL">
                 <ul>
                     <li>Home</li>
                     <li>About</li>
@@ -15,9 +11,8 @@ const NavBar = () => {
                 </ul>
             </section>
         </nav>
-    )
-
+    );
 };
 
-
-    export default NavBar;
+export default NavBar;
+ 

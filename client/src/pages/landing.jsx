@@ -1,17 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import "./landing.css";
 
 const Landing = () => {
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
   return (
-    <section>
+    <section id='landing-parent'>
       <h1>CareerTrak</h1>
       <section>
-        <img src="" />
+        {/* <img src="" alt="CareerTrak" /> */}
       </section>
-      <section>
-        <Link id='login-link' to="/login">Login</Link>
-        <Link id='register-link' to="/register">Register</Link>
+      <section className='links'>
+        <button id='login-link' onClick={handleLoginClick}>Login</button>
+        <button id='register-link' onClick={handleRegisterClick}>Register</button>
       </section>
     </section>
   );

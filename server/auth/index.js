@@ -74,10 +74,11 @@ router.get('/me', async (req, res) => {
     }
 
     try {
-        const require = jwt.verify(token, JWT);
+        const decoded = jwt.verify(token, JWT);
         const user = await prisma.user.findUnique({
-            where: { id: req.userId },
+            where: { id: decoded.userId },
         });
+        
 
         if (!user) {
             return res.status(404).send('User not found');
