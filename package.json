@@ -9,7 +9,6 @@
     "client:build": "cd client && npm run build",
     "server:dev": "nodemon ./server/index.js",
     "seed": "npm prisma migrate reset"
-
   },
   "prisma": {
     "seed": "node ./prisma/seed.js"
