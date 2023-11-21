@@ -6,14 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "node ./server/index.js",
-    "build": "cd client && npm run build",
-    "start": "npm run migrate && npm run server",
-    "dev": "nodemon ./server/index.js",
-    "client:dev": "cd client && npm run dev",
-    "client:build": "cd client && npm run build ",
-    "migrate": "npx prisma migrate deploy",
-    "reset": "npx prisma migrate reset"
-    },
+    "client:build": "cd client && npm run build",
+    "server:dev": "nodemon ./server/index.js",
+    "seed": "npm prisma migrate reset"
+
+  },
   "prisma": {
     "seed": "node ./prisma/seed.js"
   },
@@ -23,11 +20,13 @@
     "@prisma/client": "^5.6.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "concurrently": "^8.2.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.1",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "prisma": "^5.6.0"

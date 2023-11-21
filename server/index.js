@@ -1,6 +1,9 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = 3005;
+const jwt = require("jsonwebtoken");
+const path = require("path");
 
 app.use(require('body-parser').json());
 
@@ -18,8 +21,10 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.static(path.join(__dirname, "..",  "client/dist")));
+
 app.get(`/`, (req, res) => {
-    res.send(`hello world again`);
+    res.sendFile(path.join(__dirname, "..",  "client/dist/index.html"));
 });
 
 app.use('/api', require('./api'));
