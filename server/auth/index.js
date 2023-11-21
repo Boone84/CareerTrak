@@ -66,15 +66,15 @@ router.post('/signIn', async (req, res) => {
 
 // Route that sends the user based on the given token
 router.get('/me', async (req, res) => {
-    // const auth = req.headers.authorization;
-    // const token = auth?.startsWith("Bearer ") ? auth.slice(7) : null;
+    const auth = req.headers.authorization;
+    const token = auth?.startsWith('Bearer ') ? auth.slice(7) : null;
 
-    // if (!token) {
-    //     return res.status(401).send("No token provided");
-    // }
+    if (!token) {
+        return res.status(401).send('No token provided');
+    }
 
     try {
-        // const decoded = jwt.verify(token, JWT);
+        const require = jwt.verify(token, JWT);
         const user = await prisma.user.findUnique({
             where: { id: req.userId },
         });
