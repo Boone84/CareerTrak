@@ -1,0 +1,33 @@
+.dashboard {
+    text-align: center;
+    margin-top: 20vh;
+}
+
+#dash-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 25vh;
+    margin: 5vh auto;
+}
+
+.navbar {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar li {
+    text-decoration: none;
+}
+nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f8f8; 
+    box-shadow: 0 -1px 4px rgba(0,0,0,0.1); 
+    padding: 10px 0;
+}
+

@@ -17,7 +17,9 @@ function LoginForm() {
             if (response.ok) {
                 const data = await response.json();
                 console.log('Login successful', data);
-                navigate('./dashboard'); // Redirect to dashboard or another page
+                localStorage.setItem('userName', data.userName);
+                
+                navigate('/dashboard'); // Redirect to dashboard or another page
             } else {
                 console.error('Login failed');
             }
